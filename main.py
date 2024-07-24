@@ -15,12 +15,18 @@ def loopThroughAllItems(plex, logger, day, section):
         
         # 获取库内所有的项目(项目指整部电影/整部剧集)
         for item in section.all():
+            # try:
+            #     # 获取项目更新元数据的时间
+            #     updated_date = datetime.datetime.date(item.updatedAt)
+            # except item.updatedAt == 'none':
+            #     # 部分项目无更新时间时则按当天作为更新时间
+            #     updated_date = olddate + datetime.timedelta(days = 0)
             try:
                 # 获取项目更新元数据的时间
-                updated_date = datetime.datetime.date(item.updatedAt)
-            except item.updatedAt == 'none':
+                updated_date = item.updatedAt.date()
+            except AttributeError:
                 # 部分项目无更新时间时则按当天作为更新时间
-                updated_date = olddate + datetime.timedelta(days = 0)
+                updated_date = datetime.datetime.now().date()
             
             # 如项目更新时间大于设定的x天时间
             if updated_date >= olddate:
